@@ -8,7 +8,7 @@
       <link href="/2025/09/02/CSAPP-Note/"/>
       <url>/2025/09/02/CSAPP-Note/</url>
       
-        <content type="html"><![CDATA[]]></content>
+        <content type="html"><![CDATA[<h1 id="第一章：计算机系统漫游"><a href="#第一章：计算机系统漫游" class="headerlink" title="第一章：计算机系统漫游"></a>第一章：计算机系统漫游</h1><h3 id="一，信息由字节表示："><a href="#一，信息由字节表示：" class="headerlink" title="一，信息由字节表示："></a>一，信息由字节表示：</h3><p>无论是cpp文件亦或是其他文件，程序中的每一个文本字符都是由ASCII码表示的，例如hello.c文件由ASCII文本表示如下：</p><p>![屏幕截图 2025-09-02 181956](C:\Users\LENOVO\Pictures\Screenshots\屏幕截图 2025-09-02 181956.png)</p><p>像以上的文件被称为文本文件，所有其他文件均被称为二进制文件。</p><h3 id="二，程序编译过程的不同形式："><a href="#二，程序编译过程的不同形式：" class="headerlink" title="二，程序编译过程的不同形式："></a>二，程序编译过程的不同形式：</h3><p>系统上helllo.c文件的运行：</p><p>每条C语句被转化为<strong>低级机器语言指令</strong>，这些指令再按照称为<strong>可执行目标程序</strong>的格式打包，以二进制的磁盘文件形式存放。<u>（目标程序文件也被称为可执行目标文件）</u></p><p>从源文件到目标文件的转化是由编译器驱动程序完成的。编译过程则可分为四个阶段，执行四个阶段的程序</p><p><strong>（预处理器，编译器，汇编器，链接器）一起构成了编译系统。</strong></p><p>![屏幕截图 2025-09-02 183128](C:\Users\LENOVO\Pictures\Screenshots\屏幕截图 2025-09-02 183128.png)</p><h4 id="过程解释："><a href="#过程解释：" class="headerlink" title="过程解释："></a>过程解释：</h4><h5 id="预处理阶段："><a href="#预处理阶段：" class="headerlink" title="预处理阶段："></a>预处理阶段：</h5><p>根据#子开头的命令，引用并插入库文件内容，得到对应的扩展文件；</p><h5 id="编译阶段："><a href="#编译阶段：" class="headerlink" title="编译阶段："></a>编译阶段：</h5><p>将文本文件hello.i翻译为文本文件hello.s，其中包括一汇编语言程序。</p><p>汇编语言的作用：将不同编译器编译的不同语言，转化为通用的汇编语言进行输出。</p><h5 id="汇编阶段："><a href="#汇编阶段：" class="headerlink" title="汇编阶段："></a>汇编阶段：</h5><p>将hello.s翻译为机器语言指令，并将其打包为<strong>可重定位目标程序</strong>的格式—-hello.o，</p><h5 id="链接阶段："><a href="#链接阶段：" class="headerlink" title="链接阶段："></a>链接阶段：</h5><p>将printf函数进行解析，链接添加进hello.o文件中，此时才可最终执行。</p><h1 id="第二章：信息的表示和处理"><a href="#第二章：信息的表示和处理" class="headerlink" title="第二章：信息的表示和处理"></a>第二章：信息的表示和处理</h1><h3 id="信息的存储："><a href="#信息的存储：" class="headerlink" title="信息的存储："></a>信息的存储：</h3><h3 id="整数表示："><a href="#整数表示：" class="headerlink" title="整数表示："></a>整数表示：</h3><h3 id="整数运算："><a href="#整数运算：" class="headerlink" title="整数运算："></a>整数运算：</h3><h3 id="浮点数："><a href="#浮点数：" class="headerlink" title="浮点数："></a>浮点数：</h3>]]></content>
       
       
       
@@ -27,7 +27,7 @@
       <link href="/2025/09/01/CS61B%E5%AD%A6%E4%B9%A0/"/>
       <url>/2025/09/01/CS61B%E5%AD%A6%E4%B9%A0/</url>
       
-        <content type="html"><![CDATA[<h1 id="Hash算法"><a href="#Hash算法" class="headerlink" title="Hash算法"></a>Hash算法</h1>]]></content>
+        <content type="html"><![CDATA[<p>Project 2：Gitlet</p>]]></content>
       
       
       
