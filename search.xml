@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>数模a题模型积累及应用</title>
+      <link href="/2025/09/03/%E6%95%B0%E6%A8%A1a%E9%A2%98%E6%A8%A1%E5%9E%8B%E7%A7%AF%E7%B4%AF%E5%8F%8A%E5%BA%94%E7%94%A8/"/>
+      <url>/2025/09/03/%E6%95%B0%E6%A8%A1a%E9%A2%98%E6%A8%A1%E5%9E%8B%E7%A7%AF%E7%B4%AF%E5%8F%8A%E5%BA%94%E7%94%A8/</url>
+      
+        <content type="html"><![CDATA[<p>微分方程及差分方程</p><p>偏微分方程（热传导问题）</p><p>优化算法</p><ul><li><p>现代优化算法</p><ul><li><p>模拟退火算法：</p><p>目的：为一个寻找最小值的优化问题</p><p>基本思想：</p><p>​       当找到一个更优解时，直接选择更优解；</p><p>​       当找到一个劣解时，有一定概率选择这个较裂解。</p></li></ul></li><li><p>经典优化算法</p></li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 数学建模 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>CSAPP_Note</title>
       <link href="/2025/09/02/CSAPP-Note/"/>
       <url>/2025/09/02/CSAPP-Note/</url>
