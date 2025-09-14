@@ -6,7 +6,6 @@
 }
 
 #an_music_bg {
-    display: none;
     filter: blur(63px);
     opacity: 0.6;
     position: fixed;
@@ -20,6 +19,8 @@
     top: -50%;
     left: -50%;
     transform: rotate(0deg);
+    background-color: transparent;
+    display: block;
 }
 
 body:has(#anMusic-page) #an_music_bg {
