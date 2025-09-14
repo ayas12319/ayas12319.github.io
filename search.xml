@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>Trie树</title>
+      <link href="/2025/09/14/Trie%E6%A0%91/"/>
+      <url>/2025/09/14/Trie%E6%A0%91/</url>
+      
+        <content type="html"><![CDATA[<h1 id="trie的引入"><a class="markdownIt-Anchor" href="#trie的引入"></a> Trie的引入：</h1><p>当我们要查询某一字符串时，根据现有的数据结构，可能会有以下几种选择：</p><ul><li>Hash表：<ul><li>哈希表中的元素是无序存储的，每次搜索前缀时，均需要遍历O(N);</li></ul></li><li>BST:<ul><li>首先找到匹配的前缀就需要O(logN)的时间，其次需要以中序遍历搜索所有prexxx的字符串。故总时间复杂度为O( K + logN),且不知道K具体会有多大。</li></ul></li></ul><h1 id="trie的原理"><a class="markdownIt-Anchor" href="#trie的原理"></a> Trie的原理：</h1><h3 id="核心思想"><a class="markdownIt-Anchor" href="#核心思想"></a> 核心思想：</h3><p>用空间来换取时间，用字符串的公共前缀来降低搜索的时间复杂度。</p><h3 id="基本性质"><a class="markdownIt-Anchor" href="#基本性质"></a> 基本性质：</h3><ul><li><p>根节点不包括字符。其余每一个节点均包括一个字符；</p></li><li><p>以路径表示字符串；</p></li><li><p>对于终点进行标记；</p></li></ul><h1 id="trie的实现"><a class="markdownIt-Anchor" href="#trie的实现"></a> Trie的实现：</h1><p>根据数组来实现trie树：</p><p>维护两个数组：</p><ul><li>son[N] [26]: 第一维表示节点，第二维表示每个节点最多有26个子节点(字母总数)</li><li>cnt[N]: cnt[p]表示以字符p结尾的路径个数</li></ul><h2 id="插入操作"><a class="markdownIt-Anchor" href="#插入操作"></a> 插入操作：</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">void insert (char* str)&#123;</span><br><span class="line">  int p = 0; //从根节点开始遍历</span><br><span class="line">  for(int i = 0; str[i]; ++i)&#123;</span><br><span class="line">     int u = str[i] - &#x27;a&#x27;;  //转化成对应数值</span><br><span class="line">     if(!son[p][u])&#123;  //若没有对应子节点，则创建</span><br><span class="line">         son[p][u] = ++idx;</span><br><span class="line">     &#125;</span><br><span class="line">     p = son[p][u];</span><br><span class="line">  &#125;</span><br><span class="line">  cnt[p] ++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="查询操作"><a class="markdownIt-Anchor" href="#查询操作"></a> 查询操作：</h2><p>(以特定字母结尾的字符串个数)</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">int query(char* str)&#123;</span><br><span class="line">   int p = 0;</span><br><span class="line">   for(int i = 0; str[i]; ++i)&#123;</span><br><span class="line">     int u = str[i] - &#x27;a&#x27;;</span><br><span class="line">     if(!son[p][u])&#123;</span><br><span class="line">         return 0; </span><br><span class="line">     &#125;</span><br><span class="line">     p = son[p][u];</span><br><span class="line">   &#125;</span><br><span class="line">   return cnt[p];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h1 id="时间复杂度分析"><a class="markdownIt-Anchor" href="#时间复杂度分析"></a> 时间复杂度分析：</h1><p>虽然占用的空间开销较大，但插入与查询操作均加速到了O(L);</p><p>L为字符串的长度。均与N无关。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 数据结构 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Git的基本使用</title>
       <link href="/2025/09/14/Git%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/"/>
       <url>/2025/09/14/Git%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</url>
