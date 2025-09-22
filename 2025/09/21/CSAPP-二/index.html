@@ -1,0 +1,325 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>CSAPP(二) | ayas12319的博客</title><meta name="author" content="ayas_xuebin"><meta name="copyright" content="ayas_xuebin"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="C语言转换为机器语言的流程：先通过编译器(gcc,  -Og,  -S)转换成汇编语言， 再将汇编语言通过(gcc,  as)转换为实际的字节形式 再通过链接器将不同文件融合在一起(你的文件，编译文件，库文件)  编译为汇编语言： 指令： 1gcc -Og -S sum.c  汇编代码的特性：1，与硬件的架构紧密相连 2，基于寄存器操作：寄存器不是按地址访问的，是按一个个的名称访问 3，内存访问是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSAPP(二)">
+<meta property="og:url" content="http://ayas12319.github.io/2025/09/21/CSAPP-%E4%BA%8C/index.html">
+<meta property="og:site_name" content="ayas12319的博客">
+<meta property="og:description" content="C语言转换为机器语言的流程：先通过编译器(gcc,  -Og,  -S)转换成汇编语言， 再将汇编语言通过(gcc,  as)转换为实际的字节形式 再通过链接器将不同文件融合在一起(你的文件，编译文件，库文件)  编译为汇编语言： 指令： 1gcc -Og -S sum.c  汇编代码的特性：1，与硬件的架构紧密相连 2，基于寄存器操作：寄存器不是按地址访问的，是按一个个的名称访问 3，内存访问是">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://ayas12319.github.io/images/User.jpg">
+<meta property="article:published_time" content="2025-09-21T05:10:30.000Z">
+<meta property="article:modified_time" content="2025-09-21T12:01:44.994Z">
+<meta property="article:author" content="ayas_xuebin">
+<meta property="article:tag" content="计算机组成原理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ayas12319.github.io/images/User.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "CSAPP(二)",
+  "url": "http://ayas12319.github.io/2025/09/21/CSAPP-%E4%BA%8C/",
+  "image": "http://ayas12319.github.io/images/User.jpg",
+  "datePublished": "2025-09-21T05:10:30.000Z",
+  "dateModified": "2025-09-21T12:01:44.994Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "ayas_xuebin",
+      "url": "http://ayas12319.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/images/star.jpg"><link rel="canonical" href="http://ayas12319.github.io/2025/09/21/CSAPP-%E4%BA%8C/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const hour = new Date().getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (theme === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else theme === 'light' ? activateLightMode() : activateDarkMode()
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: ayas_xuebin","link":"链接: ","source":"来源: ayas12319的博客","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'CSAPP(二)',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      if ($loadingBox.classList.contains('loaded')) return
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+
+  if (document.readyState === 'complete') {
+    preloader.endLoading()
+  } else {
+    window.addEventListener('load', preloader.endLoading)
+    document.addEventListener('DOMContentLoaded', preloader.endLoading)
+    // Add timeout protection: force end after 7 seconds
+    setTimeout(preloader.endLoading, 7000)
+  }
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div id="web_bg" style="background-image: url(/images/star.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/images/User.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 列表</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 相关推荐</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/star.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/images/icon.png" alt="Logo"><span class="site-name">ayas12319的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">CSAPP(二)</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 列表</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 相关推荐</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">CSAPP(二)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-09-21T05:10:30.000Z" title="发表于 2025-09-21 13:10:30">2025-09-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-09-21T12:01:44.994Z" title="更新于 2025-09-21 20:01:44">2025-09-21</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">816</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="C语言转换为机器语言的流程："><a href="#C语言转换为机器语言的流程：" class="headerlink" title="C语言转换为机器语言的流程："></a>C语言转换为机器语言的流程：</h1><p>先通过编译器(gcc,  -Og,  -S)转换成汇编语言，</p>
+<p>再将汇编语言通过(gcc,  as)转换为实际的字节形式</p>
+<p>再通过链接器将不同文件融合在一起(你的文件，编译文件，库文件)</p>
+<p><img src="https://youke1.picui.cn/s1/2025/09/21/68cfbf04ad351.png"></p>
+<p>编译为汇编语言：</p>
+<p><strong>指令：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -Og -S sum.c</span><br></pre></td></tr></table></figure>
+
+<h1 id="汇编代码的特性："><a href="#汇编代码的特性：" class="headerlink" title="汇编代码的特性："></a>汇编代码的特性：</h1><p>1，与硬件的架构紧密相连</p>
+<p>2，基于寄存器操作：寄存器不是按地址访问的，是按一个个的名称访问</p>
+<p>3，内存访问是按照地址进行的</p>
+<p>4，通过指令集进行操作；</p>
+<h1 id="汇编代码的数据类型："><a href="#汇编代码的数据类型：" class="headerlink" title="汇编代码的数据类型："></a>汇编代码的数据类型：</h1><p>汇编代码中不同的数据类型主要体现在：</p>
+<ul>
+<li>数据大小(字节数)</li>
+<li>指令选择</li>
+<li>解释方式</li>
+<li>对于无符号数与有符号没有区别，均为一串地址；</li>
+<li>对于浮点数则在专门的register上进行操作；</li>
+</ul>
+<h1 id="反汇编器："><a href="#反汇编器：" class="headerlink" title="反汇编器："></a>反汇编器：</h1><p>是一种可用于任何逆向工程的工具、</p>
+<p>将机器代码(二进制指令)重新转换为汇编语言。但<strong>本身反汇编器无法访问.c文件亦或是.s文件，只是读取编译后的二进制文件中本身的字节序列进行转换。</strong></p>
+<h1 id="寄存器："><a href="#寄存器：" class="headerlink" title="寄存器："></a>寄存器：</h1><p>x86-64 整数寄存器：</p>
+<p>%r寄存器支持和引用64位，而%e寄存器支持引用32位。</p>
+<p><img src="https://youke1.picui.cn/s1/2025/09/21/68cfc970660fe.png"></p>
+<h1 id="数据的移动："><a href="#数据的移动：" class="headerlink" title="数据的移动："></a>数据的移动：</h1><p>主要通过mov指令实现</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov source, dest  将源操作数移动到目标操作数</span><br></pre></td></tr></table></figure>
+
+<p>主要有九种模式：(<strong>立即数，寄存器和内存之间的互相移动</strong>)</p>
+<p>立即数到register：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov %rcs, 42</span><br></pre></td></tr></table></figure>
+
+<p>寄存器到寄存器：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov %rcs, %rbx</span><br></pre></td></tr></table></figure>
+
+<p>内存到寄存器:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov %rcx, [variable]  将内存中variable的值复制到rcx</span><br></pre></td></tr></table></figure>
+
+<p>………….</p>
+<p><strong>形象理解：</strong></p>
+<p>寄存器就是用来临时存储对象的。</p>
+<p><img src="https://youke1.picui.cn/s1/2025/09/21/68cfdd27d22c6.png"></p>
+<h1 id="如何指定内存引用的源或目标："><a href="#如何指定内存引用的源或目标：" class="headerlink" title="如何指定内存引用的源或目标："></a>如何指定内存引用的源或目标：</h1><p>（register）即表示引用这个寄存器的地址</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov (%rcx), %rax</span><br></pre></td></tr></table></figure>
+
+<h2 id="带有偏移量："><a href="#带有偏移量：" class="headerlink" title="带有偏移量："></a>带有偏移量：</h2><ul>
+<li><strong>对于寄存器：即为D(register);</strong></li>
+<li><strong>对于内存：即为Mem[Reg[R] + D];</strong></li>
+</ul>
+<h3 id="实例："><a href="#实例：" class="headerlink" title="实例："></a>实例：</h3><p>利用汇编实现数值交换：</p>
+<p>C语言版：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">void swap(long* xp, long* yp)&#123;</span><br><span class="line">   long t0 = *xp;</span><br><span class="line">   long t1 = *yp;</span><br><span class="line">   *xp = t1;</span><br><span class="line">   *yp = t0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对应的汇编版：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">swap:</span><br><span class="line">  moveq  (%rdi), %rax</span><br><span class="line">  moveq  (%rsi), %rdx</span><br><span class="line">  moveq  %rdx, (%rdi)</span><br><span class="line">  moveq  %rax, (%rsi)</span><br><span class="line">  ret</span><br></pre></td></tr></table></figure>
+
+<h1 id="lea命令："><a href="#lea命令：" class="headerlink" title="lea命令："></a>lea命令：</h1><p>根据寄存器中存储的数值，按照内存寻址的语法规则进行算数计算，将结果存储到目标寄存器中。</p>
+<p><strong>内存寻址的语法规则：地址 &#x3D; 基址 +索引 * 比例因子。</strong></p>
+<p><strong>注意：比例因子只能为1,2,4,8</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lea eax, [ebx + 8]</span><br></pre></td></tr></table></figure>
+
+<p>只计算出ebx + 8的地址，<strong>将地址值(而不是实际数值)存入eax，不访问内存。</strong></p>
+<h2 id="与move的区别："><a href="#与move的区别：" class="headerlink" title="与move的区别："></a>与move的区别：</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">leaq (%rdi, %rsi), %rax</span><br><span class="line">将rdi与rsi中计算的数值存储到rax中</span><br><span class="line"></span><br><span class="line">movq (%rdi, %rsi), %rax</span><br><span class="line">从内存地址为(rdi +rsi)读取数据存到rax中</span><br></pre></td></tr></table></figure>
+
+<h2 id="计算实例："><a href="#计算实例：" class="headerlink" title="计算实例："></a>计算实例：</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">leaq (%rsi, %rsi, 2), %rdx</span><br></pre></td></tr></table></figure>
+
+<p>2就是比例因子，实质就是将rsi中的值 * 3存进rdx中。</p>
+<p>即rdx &#x3D; rsi + rsi * 2。</p>
+<h1 id="其他常用指令："><a href="#其他常用指令：" class="headerlink" title="其他常用指令："></a>其他常用指令：</h1><table>
+<thead>
+<tr>
+<th>addq</th>
+<th>scr, dest</th>
+<th>dest &#x3D; dest +src</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>subq</td>
+<td>src, dest</td>
+<td>dest &#x3D; dest - src</td>
+</tr>
+<tr>
+<td>imulq</td>
+<td>src, dest</td>
+<td>dest &#x3D; dest * src</td>
+</tr>
+<tr>
+<td>salq</td>
+<td>src, dest</td>
+<td>dest &#x3D; dest &lt;&lt; src</td>
+</tr>
+<tr>
+<td>shrq</td>
+<td>src, dest</td>
+<td>dest &#x3D; dest &gt;&gt; src</td>
+</tr>
+<tr>
+<td>xorq</td>
+<td>src, dest</td>
+<td>dest  &#x3D; dest ^ src</td>
+</tr>
+<tr>
+<td>andq</td>
+<td>src, dest</td>
+<td>dest &#x3D; dest &amp; src</td>
+</tr>
+<tr>
+<td>orq</td>
+<td>src, dest</td>
+<td>dest &#x3D; dest | src</td>
+</tr>
+</tbody></table>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://ayas12319.github.io">ayas_xuebin</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://ayas12319.github.io/2025/09/21/CSAPP-%E4%BA%8C/">http://ayas12319.github.io/2025/09/21/CSAPP-%E4%BA%8C/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://ayas12319.github.io" target="_blank">ayas12319的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></div><div class="post-share"><div class="social-share" data-image="/images/User.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/09/20/CMU15445-%E4%BA%8C/" title="CMU15445(二)"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">CMU15445(二)</div></div><div class="info-2"><div class="info-item-1">数据的存储：系统的本质是协调数据在磁盘与内存之间的移动。数据的存储结构总是层状的： (CPU Register –&gt; CPU Caches(cpu缓存) —&gt; DRAM(内存) —&gt; SSD(机械硬盘) —&gt; HDD —-&gt; Network Storage) 在不同的层次上决定了使用什么数据结构与算法。 在DRAM之前的结构都被称为易失性结构( 拔掉电源后，数据立刻消失)；之后的结构都被称为非易失性结构。 易失性与非易失性结构的区别： 易失性结构都是通过字节寻址的，可以随意转移到目标数值； 非易失性结构都是块状寻址：不能访问任意偏移地址，只能以块为调位调入整个页面。比如：一次性调入4000字节，以来检索到包括的目标数值。  PS: 这里我们统一将非易失性结构统称为磁盘。 数据的访问方式：顺序访问VS随机访问  随机访问：不断移动到不同的位置，读取目标的数值，访问任意位置的离散的数据。 顺序访问：给定目标数值的附近区域，一次性提取出连续的正片区域的数值。访问连续位置的块数据。  访问速度比较： 由于物理上的移动速度很慢，访问不同物理位置的开销更大，故随...</div></div></div></a><a class="pagination-related" href="/2025/09/22/%E7%BA%BF%E6%80%A7%E8%A1%A8/" title="线性表"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">线性表</div></div><div class="info-2"><div class="info-item-1">数组：数组的类实现：1234567891011121314151617181920template &lt;class Type&gt; class Array&#123;    private:       Type * elements;       int ArraySize;       void get_Array();  //动态分配存储空间    public:       Array(int size); //根据大小构造函数       Array(const Array&lt;Type&gt; &amp;x);  //复制构造函数       ~Array()&#123;  //析构函数           delete []elements;       &#125;       Array&lt;Type&gt; &amp; operator = (const Array&lt;Type&gt;&amp;A);  //数组复制       Type&amp; operator [](int i);  //获取特定元素       int length() ...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/09/02/CSAPP-Note/" title="CSAPP(一，数据)"><img class="cover" src="/images/grass_landscape.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-02</div><div class="info-item-2">CSAPP(一，数据)</div></div><div class="info-2"><div class="info-item-1">第一章：计算机系统漫游一，信息由字节表示：无论是cpp文件亦或是其他文件，程序中的每一个文本字符都是由ASCII码表示的，例如hello.c文件由ASCII文本表示如下： ![屏幕截图 2025-09-02 181956](C:\Users\LENOVO\Pictures\Screenshots\屏幕截图 2025-09-02 181956.png) 像以上的文件被称为文本文件，所有其他文件均被称为二进制文件。 二，程序编译过程的不同形式：系统上helllo.c文件的运行： 每条C语句被转化为低级机器语言指令，这些指令再按照称为可执行目标程序的格式打包，以二进制的磁盘文件形式存放。（目标程序文件也被称为可执行目标文件） 从源文件到目标文件的转化是由编译器驱动程序完成的。编译过程则可分为四个阶段，执行四个阶段的程序 （预处理器，编译器，汇编器，链接器）一起构成了编译系统。 ![屏幕截图 2025-09-02 183128](C:\Users\LENOVO\Pictures\Screenshots\屏幕截图 2025-09-02 183128.png) 过程解释：预处理阶段：根据#子...</div></div></div></a><a class="pagination-related" href="/2025/09/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" title="(一)概论"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-09</div><div class="info-item-2">(一)概论</div></div><div class="info-2"><div class="info-item-1">计算机的层次结构：软件在不同机器上运行的根本区别是所需要的指令集的不同。 越靠近底层的语言，效率越高—-能充分发挥硬件的优良特性。 基本框架：1234567891011高级语言----------&gt;虚拟机器M3​      |编译汇编语言---------&gt;虚拟机器M2操作系统----------&gt;虚拟机器机器语言---------&gt; 实际机器M1微指令系统-------&gt;微程序机器 (在CPU中的CU(control unit)中执行)  操作系统是软硬件的分界线。(分界线并非一成不变，两者可能互相转化) 计算机体系结构：(如：有无浮点运算指令) 程序员所见到的计算机系统的属性。概念性的结构与功能特性。(汇编语言) (指令系统，数据类型，寻址技术，I&#x2F;O机理) 计算机组成：(如：具体如何实现浮点运算指令) 实现计算机体系结构所体现的属性。 计算机基本组成：冯.诺依曼体系：1，计算机由五大部件组成； 2，指令和数据以同等地位存于存储器，可按地址访问。 3，指令和数据用二进制表示； 4，指令由操作码和地址码组成； 5，存储程序方式； 6，以运...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/images/User.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">ayas_xuebin</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/ayas12319"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/ayas12319" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">I wish you to become your own sun, no need to rely on who's light.</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#C%E8%AF%AD%E8%A8%80%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%9C%BA%E5%99%A8%E8%AF%AD%E8%A8%80%E7%9A%84%E6%B5%81%E7%A8%8B%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">C语言转换为机器语言的流程：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B1%87%E7%BC%96%E4%BB%A3%E7%A0%81%E7%9A%84%E7%89%B9%E6%80%A7%EF%BC%9A"><span class="toc-number">2.</span> <span class="toc-text">汇编代码的特性：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B1%87%E7%BC%96%E4%BB%A3%E7%A0%81%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">汇编代码的数据类型：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%8D%E6%B1%87%E7%BC%96%E5%99%A8%EF%BC%9A"><span class="toc-number">4.</span> <span class="toc-text">反汇编器：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8%EF%BC%9A"><span class="toc-number">5.</span> <span class="toc-text">寄存器：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%9A%84%E7%A7%BB%E5%8A%A8%EF%BC%9A"><span class="toc-number">6.</span> <span class="toc-text">数据的移动：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%8C%87%E5%AE%9A%E5%86%85%E5%AD%98%E5%BC%95%E7%94%A8%E7%9A%84%E6%BA%90%E6%88%96%E7%9B%AE%E6%A0%87%EF%BC%9A"><span class="toc-number">7.</span> <span class="toc-text">如何指定内存引用的源或目标：</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%A6%E6%9C%89%E5%81%8F%E7%A7%BB%E9%87%8F%EF%BC%9A"><span class="toc-number">7.1.</span> <span class="toc-text">带有偏移量：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%EF%BC%9A"><span class="toc-number">7.1.1.</span> <span class="toc-text">实例：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#lea%E5%91%BD%E4%BB%A4%EF%BC%9A"><span class="toc-number">8.</span> <span class="toc-text">lea命令：</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8Emove%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9A"><span class="toc-number">8.1.</span> <span class="toc-text">与move的区别：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E5%AE%9E%E4%BE%8B%EF%BC%9A"><span class="toc-number">8.2.</span> <span class="toc-text">计算实例：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%EF%BC%9A"><span class="toc-number">9.</span> <span class="toc-text">其他常用指令：</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/09/22/%E7%BA%BF%E6%80%A7%E8%A1%A8/" title="线性表">线性表</a><time datetime="2025-09-22T02:15:29.000Z" title="发表于 2025-09-22 10:15:29">2025-09-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/09/21/CSAPP-%E4%BA%8C/" title="CSAPP(二)">CSAPP(二)</a><time datetime="2025-09-21T05:10:30.000Z" title="发表于 2025-09-21 13:10:30">2025-09-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/09/20/CMU15445-%E4%BA%8C/" title="CMU15445(二)">CMU15445(二)</a><time datetime="2025-09-20T08:01:12.000Z" title="发表于 2025-09-20 16:01:12">2025-09-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/09/19/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%9A%84%E6%90%AD%E5%BB%BA/" title="个人博客的搭建">个人博客的搭建</a><time datetime="2025-09-19T00:18:51.000Z" title="发表于 2025-09-19 08:18:51">2025-09-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/09/16/%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F%E4%B8%8EDAG/" title="拓扑排序与DAG">拓扑排序与DAG</a><time datetime="2025-09-16T13:42:50.000Z" title="发表于 2025-09-16 21:42:50">2025-09-16</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 By ayas_xuebin</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.4.3</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = true;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 570px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 480px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover1.webp);"> <a class="categoryBar-list-link" href="categories/数据库/">数据库</a><span class="categoryBar-list-count">3</span><span class="categoryBar-list-descr">工具</span></li><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover2.webp);"> <a class="categoryBar-list-link" href="categories/计算机组成原理/">计算机组成原理</a><span class="categoryBar-list-count">2</span><span class="categoryBar-list-descr">数据库</span></li><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover3.webp);"> <a class="categoryBar-list-link" href="categories/工具/">工具</a><span class="categoryBar-list-count">1</span><span class="categoryBar-list-descr">数据结构</span></li><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover4.webp);"> <a class="categoryBar-list-link" href="categories/数据结构/">数据结构</a><span class="categoryBar-list-count">6</span><span class="categoryBar-list-descr">前端</span></li><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover5.webp);"> <a class="categoryBar-list-link" href="categories/前端/">前端</a><span class="categoryBar-list-count">1</span><span class="categoryBar-list-descr">计算机组成原理</span></li><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover6.webp);"> <a class="categoryBar-list-link" href="categories/数学建模/">数学建模</a><span class="categoryBar-list-count">1</span><span class="categoryBar-list-descr">数学建模</span></li><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover1.webp);"> <a class="categoryBar-list-link" href="categories/随想/">随想</a><span class="categoryBar-list-count">1</span><span class="categoryBar-list-descr">随想</span></li></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/unitychan.model.json"},"display":{"position":"right","width":200,"height":300},"mobile":{"show":false},"log":false,"tagMode":false});</script></body></html>
