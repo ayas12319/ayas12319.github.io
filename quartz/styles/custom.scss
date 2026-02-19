@@ -1,35 +1,3 @@
 @use "./base.scss";
 
 // put your custom CSS here!
-@font-face {
-    font-family: "LXGWWenKaiScreen";
-    font-style: normal;
-    font-weight: normal;
-    font-display: swap;
-    src: url("/static/fonts/LXGWWenKaiGBScreen.ttf") format("truetype");
-}
- 
-@font-face {
-    font-family: "Monaco";
-    font-style: normal;
-    font-weight: normal;
-    font-display: swap;
-    src: url("/static/fonts/monaco.ttf") format("truetype");
-}
- 
-@font-face {
-    font-family: "Biro";
-    font-style: normal;
-    font-weight: normal;
-    font-display: swap;
-    src: url("/static/fonts/Biro-Script-reduced-2.ttf") format("truetype");
-}
- 
-@font-face {
-    font-family: "LXGWWenKaiScreen";
-    font-style: normal;
-    font-weight: normal;
-    font-display: swap;
-    src: url("/static/fonts/Bookerly-Regular.ttf") format("truetype");
-    unicode-range: U+00-7F;
-}
