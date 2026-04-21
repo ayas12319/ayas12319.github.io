@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   push:
-    branches: [ "astro-paper" ]  # 当 astro-paper 分支有推送时触发
+    branches: [ "astro-paper" ]
 
 jobs:
   build:
@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: "☁️ Checkout repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4  # 保持 v4，警告可以忽略，不影响运行
 
       - name: "📦 Install pnpm"
         uses: pnpm/action-setup@v4
@@ -35,9 +35,11 @@ jobs:
       - name: "🚀 Build the project"
         run: pnpm run build
 
-      # 部署到 GitHub Pages
-      - name: Deploy
+      - name: "📄 Add .nojekyll file"
+        run: touch ./dist/.nojekyll
+
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist  # Astro 构建输出目录是 dist
+          publish_dir: ./dist
