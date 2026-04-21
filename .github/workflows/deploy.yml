@@ -1,83 +1,43 @@
 name: Deploy
 
-  
-
 on:
-
-push:
-
-branches: [ "astro-paper" ] # 当 astro-paper 分支有推送时触发
-
-  
+  push:
+    branches: [ "astro-paper" ]  # 当 astro-paper 分支有推送时触发
 
 jobs:
+  build:
+    name: Code standards & build
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
 
-build:
+    strategy:
+      matrix:
+        node-version: [20]
 
-name: Code standards & build
+    steps:
+      - name: "☁️ Checkout repository"
+        uses: actions/checkout@v4
 
-runs-on: ubuntu-latest
+      - name: "📦 Install pnpm"
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
 
-timeout-minutes: 3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
 
-  
+      - name: "📦 Install dependencies"
+        run: pnpm install
 
-strategy:
+      - name: "🚀 Build the project"
+        run: pnpm run build
 
-matrix:
-
-node-version: [20]
-
-steps:
-
-- name: "☁️ Checkout repository"
-
-uses: actions/checkout@v4
-
-  
-
-- name: "📦 Install pnpm"
-
-uses: pnpm/action-setup@v4
-
-with:
-
-version: 10
-
-  
-
-- name: Use Node.js ${{ matrix.node-version }}
-
-uses: actions/setup-node@v4
-
-with:
-
-node-version: ${{ matrix.node-version }}
-
-cache: "pnpm"
-
-  
-
-- name: "📦 Install dependencies"
-
-run: pnpm install
-
-  
-
-- name: "🚀 Build the project"
-
-run: pnpm run build
-
-  
-
-# 8. 部署到 GitHub Pages
-
-- name: Deploy
-
-uses: peaceiris/actions-gh-pages@v3
-
-with:
-
-github_token: ${{ secrets.PAT }}
-
-publish_dir: ./dist # Astro 构建输出目录是 dist
+      # 部署到 GitHub Pages
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist  # Astro 构建输出目录是 dist
