@@ -19,7 +19,7 @@ interface Social {
 export const SOCIALS: Social[] = [
   {
     name: "GitHub",
-    href: "https://github.com/ayas12319.com",
+    href: "https://github.com/ayas12319",
     linkTitle: `${SITE.title} on GitHub`,
     icon: IconGitHub,
   },
@@ -37,7 +37,7 @@ export const SOCIALS: Social[] = [
   },
   {
     name: "Mail",
-    href: "3927412804@qq.com",
+    href: "mailto:m3927412804@qq.com",
     linkTitle: `Send an email to ${SITE.title}`,
     icon: IconMail,
   },
