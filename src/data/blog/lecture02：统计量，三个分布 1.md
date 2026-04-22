@@ -66,8 +66,8 @@ $$
 - 对称性：t-分布的密度函数关于0对称
 - 期望：若n > 1，则E(T) = 0
 - 极限分布：设$f(x ; n)$为对应t分布的密度函数，当$n \rightarrow \infty$时，
-    $$
-    f(x;n) \rightarrow \frac{1}{\sqrt{2\pi}}e^{-x^{2} / 2}
+$$
+f(x;n) \rightarrow \frac{1}{\sqrt{2\pi}}e^{-x^{2} / 2}
 $$
     即t-分布在$n \rightarrow \infty$时的极限分布为标准正态分布N(0, 1)
 
