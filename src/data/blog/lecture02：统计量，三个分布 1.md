@@ -69,7 +69,8 @@ $$
 $$
 f(x;n) \rightarrow \frac{1}{\sqrt{2\pi}}e^{-x^{2} / 2}
 $$
-    即t-分布在$n \rightarrow \infty$时的极限分布为标准正态分布N(0, 1)
+
+即t-分布在$n \rightarrow \infty$时的极限分布为标准正态分布N(0, 1)
 
 ## F-分布
 **定义：**
