@@ -4,6 +4,7 @@ tags:
 title: 拟牛顿法
 author: 薛彬
 description: 拟牛顿法解决Hessian矩阵计算复杂问题
+pubDatetime: 2026-07-04
 ---
 
 **拟牛顿法基本思想：**

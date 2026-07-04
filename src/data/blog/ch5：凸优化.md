@@ -4,6 +4,7 @@ tags:
 title: 凸优化
 author: 薛彬
 description: 凸函数，凸集与凸问题
+pubDatetime: 2026-07-04
 ---
 
 # 凸集

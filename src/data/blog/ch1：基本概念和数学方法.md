@@ -4,6 +4,7 @@ tags:
 title: 基本概念与数学方法
 author: 薛彬
 description: 优化问题的基本概念
+pubDatetime: 2026-07-04
 ---
 
 ## 1.1 什么是优化问题？

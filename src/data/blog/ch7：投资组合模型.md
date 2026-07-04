@@ -4,6 +4,7 @@ tags:
 author: 薛彬
 description: 投资组合模型
 title: 投资组合模型
+pubDatetime: 2026-07-04
 ---
 
 # 投资组合与收益率

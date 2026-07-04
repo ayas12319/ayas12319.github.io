@@ -4,6 +4,7 @@ tags:
 author: 薛彬
 description: 市场均衡与CAPM模型
 title: 市场均衡与CAPM模型
+pubDatetime: 2026-07-04
 ---
 
 # 市场均衡与资本市场线

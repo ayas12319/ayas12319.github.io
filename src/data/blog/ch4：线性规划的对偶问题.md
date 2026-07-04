@@ -4,6 +4,7 @@ tags:
 title: LP问题的对偶以及对偶问题的转化
 author: 薛彬
 description: 对偶问题的介绍
+pubDatetime: 2026-07-04
 ---
 
 # 对偶问题的理解

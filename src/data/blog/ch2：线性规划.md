@@ -4,6 +4,7 @@ tags:
 title: 线性规划
 author: 薛彬
 description: 线性规划的基本知识
+pubDatetime: 2026-07-04
 ---
 
 # 线性规划标准形式

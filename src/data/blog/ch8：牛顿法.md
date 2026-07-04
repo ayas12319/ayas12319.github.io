@@ -4,6 +4,7 @@ tags:
 title: 牛顿法
 author: 薛彬
 description: 牛顿法利用二阶信息
+pubDatetime: 2026-07-04
 ---
 
 # 二阶Taylor近似与Newton展开

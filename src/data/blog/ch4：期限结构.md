@@ -4,6 +4,7 @@ tags:
 author: 薛彬
 description: 期限结构
 title: 期限结构
+pubDatetime: 2026-07-04
 ---
 
 # 收益率曲线与期限结构

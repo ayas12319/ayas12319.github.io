@@ -4,6 +4,7 @@ tags:
 title: 梯度下降算法
 author: 薛彬
 description: GD算法的基本概念
+pubDatetime: 2026-07-04
 ---
 
 # 下降方向与步长

@@ -4,6 +4,7 @@ tags:
 title: 对偶理论
 author: 薛彬
 description: 对偶理论与拉格朗日对偶
+pubDatetime: 2026-07-04
 ---
 
 **使用对偶理论的基本思想:**

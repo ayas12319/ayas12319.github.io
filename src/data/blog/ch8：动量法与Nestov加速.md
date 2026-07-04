@@ -4,6 +4,7 @@ tags:
 author: 薛彬
 title: 动量法与Nestrov加速
 description: 动量法与Nestrov加速
+pubDatetime: 2026-07-04
 ---
 
 **问题引入：**

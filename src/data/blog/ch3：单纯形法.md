@@ -4,6 +4,7 @@ tags:
 title: 单纯形法
 author: 薛彬
 description: 单纯形法解决LP问题
+pubDatetime: 2026-07-04
 ---
 
 # 单纯形法预备知识

@@ -4,6 +4,7 @@ tags:
 title: 因子模型与参数
 author: 薛彬
 description: 因子模型与参数
+pubDatetime: 2026-07-04
 ---
 
 # 因子模型

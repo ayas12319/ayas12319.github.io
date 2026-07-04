@@ -4,6 +4,7 @@ tags:
 title: 应用利率分析
 description: 应用利率分析
 author: 薛彬
+pubDatetime: 2026-07-04
 ---
 
 # 资本预算模型

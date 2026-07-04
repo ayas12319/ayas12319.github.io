@@ -4,6 +4,7 @@ tags:
 author: 薛彬
 title: 随机梯度算法，Mini-batch与Adam算法
 description: 随机梯度，Mini-batch与Adam算法
+pubDatetime: 2026-07-04
 ---
 
 # 随机梯度

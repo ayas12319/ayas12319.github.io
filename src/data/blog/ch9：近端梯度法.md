@@ -1,4 +1,5 @@
 ---
+pubDatetime: 2026-07-04
 tags:
   - 优化理论与算法
 title: 近端梯度法

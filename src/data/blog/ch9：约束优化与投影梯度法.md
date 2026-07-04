@@ -4,6 +4,7 @@ tags:
 title: 投影梯度法
 author: 薛彬
 description: 投影梯度算法
+pubDatetime: 2026-07-04
 ---
 
 在有约束条件下，普通GD可能会失效：
